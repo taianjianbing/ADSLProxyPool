@@ -13,7 +13,10 @@ from tornado.httpclient import HTTPRequest
 class MainHandler(RequestHandler):
     redis = RedisClient()
     http_client = CurlAsyncHTTPClient(force_instance=True)
-    adsl_start = 1
+
+    def initialize(self):
+
+        self.adsl_start = 1
 
     def handle_proxy(self, response):
         request = response.request
