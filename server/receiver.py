@@ -13,6 +13,7 @@ from tornado.httpclient import HTTPRequest
 class MainHandler(RequestHandler):
     redis = RedisClient()
     http_client = CurlAsyncHTTPClient(force_instance=True)
+    adsl_start = 1
 
     def handle_proxy(self, response):
         request = response.request
@@ -56,12 +57,24 @@ class MainHandler(RequestHandler):
             print('Receive proxy', proxy)
             self.redis.set(name, proxy)
             self.test_proxies()
+            self.adsl_start = 1
         elif token != TOKEN:
             self.write('Wrong Token')
         elif not port:
             self.write('No Client Port')
 
     def get(self, api):
+
+        if api == 'adsl_set':
+            if self.adsl_start == 1:
+                self.adsl_start = 0
+
+            self.write(self.adsl_start)
+
+        if api == 'adsl_status':
+
+            self.write(self.adsl_start)
+
         if api == 'first':
             result = self.redis.first()
             if result:
