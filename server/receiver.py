@@ -16,7 +16,6 @@ class MainHandler(RequestHandler):
     redis = RedisClient()
     http_client = CurlAsyncHTTPClient(force_instance=True)
 
-
     def handle_proxy(self, response):
         request = response.request
         host = request.proxy_host
@@ -50,6 +49,8 @@ class MainHandler(RequestHandler):
             self.redis.remove(name)
 
     def post(self):
+        global adsl_start
+
         token = self.get_body_argument('token', default=None, strip=False)
         port = self.get_body_argument('port', default=None, strip=False)
         name = self.get_body_argument('name', default=None, strip=False)
@@ -59,17 +60,18 @@ class MainHandler(RequestHandler):
             print('Receive proxy', proxy)
             self.redis.set(name, proxy)
             self.test_proxies()
-            globals().adsl_start = 1
+            adsl_start = 1
         elif token != TOKEN:
             self.write('Wrong Token')
         elif not port:
             self.write('No Client Port')
 
     def get(self, api):
+        global adsl_start
 
         if api == 'adsl_set':
             if adsl_start == 1:
-                globals().adsl_start = 0
+                adsl_start = 0
 
             self.write(str(adsl_start))
 
