@@ -14,10 +14,10 @@ class Sender():
     def get_ip(self, ifname=ADSL_IFNAME):
         (status, output) = subprocess.getstatusoutput('ifconfig')
         if status == 0:
-            pattern = re.compile(ifname + '.*?inet.*?(\d+\.\d+\.\d+\.\d+).*?netmask', re.S)
+            pattern = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
             result = re.search(pattern, output)
             if result:
-                ip = result.group(1)
+                ip = result.group(0)
                 return ip
 
 

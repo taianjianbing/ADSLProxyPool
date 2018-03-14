@@ -7,7 +7,7 @@ REDIS_PORT = 6379
 # 代理池键名
 PROXY_KEY = 'adsl'
 # 通信秘钥
-TOKEN = 'adsl'
+TOKEN = 'long199124'
 # 验证URL
 TEST_URL = 'http://www.baidu.com'
 # 接收器运行端口
